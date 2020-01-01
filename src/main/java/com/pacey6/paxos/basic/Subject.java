@@ -5,11 +5,11 @@ package com.pacey6.paxos.basic;
  * Homepage:http://pacey6.com/
  * Mail:support@pacey6.com
  */
-public class Subject {
+public class Subject<Q, A> {
     private int promisedNumber;
     private int acceptedNumber;
-    private String question;
-    private String acceptedAnswer;
+    private Q question;
+    private A acceptedAnswer;
 
     public int getPromisedNumber() {
         return promisedNumber;
@@ -27,19 +27,19 @@ public class Subject {
         this.acceptedNumber = acceptedNumber;
     }
 
-    public String getQuestion() {
+    public Q getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestion(Q question) {
         this.question = question;
     }
 
-    public String getAcceptedAnswer() {
+    public A getAcceptedAnswer() {
         return acceptedAnswer;
     }
 
-    public void setAcceptedAnswer(String acceptedAnswer) {
+    public void setAcceptedAnswer(A acceptedAnswer) {
         this.acceptedAnswer = acceptedAnswer;
     }
 }

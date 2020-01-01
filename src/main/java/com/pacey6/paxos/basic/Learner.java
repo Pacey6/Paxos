@@ -5,6 +5,6 @@ package com.pacey6.paxos.basic;
  * Homepage:http://pacey6.com/
  * Mail:support@pacey6.com
  */
-public interface Learner {
-    void onChosen(String question, String answer);
+public interface Learner<Q, A> {
+    void onChosen(Q question, A answer);
 }

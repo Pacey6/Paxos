@@ -5,60 +5,61 @@ package com.pacey6.paxos.basic;
  * Homepage:http://pacey6.com/
  * Mail:support@pacey6.com
  */
-public abstract class BaseProposer implements Proposer {
+public abstract class BaseProposer<Q, A> implements Proposer<Q, A> {
     private Config config;
-    private Acceptor acceptor;
-    private Learner learner;
+    private Acceptor<Q, A> acceptor;
+    private Learner<Q, A> learner;
 
-    public BaseProposer(Config config, Acceptor acceptor, Learner learner) {
+    public BaseProposer(Config config, Acceptor<Q, A> acceptor, Learner<Q, A> learner) {
         this.config = config;
         this.acceptor = acceptor;
         this.learner = learner;
     }
 
-    public void propose(String question, String answer) {
-        Proposal proposal = getProposal(question);
+    public void propose(Q question, A answer) {
+        Proposal<Q, A> proposal = getProposal(question);
         int number = createNumber(null == proposal ? 0 : proposal.getNumber());
         propose(number, question, answer);
     }
 
     @Override
-    public void onPromised(int number, String question, int acceptedNumber, String acceptedAnswer) {
-        Proposal proposal = getProposal(question);
+    public void onPromised(int number, Q question, int acceptedNumber, A acceptedAnswer) {
+        Proposal<Q, A> proposal = getProposal(question);
         if (null != proposal && proposal.getNumber() == number) {
-            proposal.setPromisedCount(proposal.getPromisedCount() + 1);
+            proposal.setPromisedBallot(proposal.getPromisedBallot() + 1);
             if (null != acceptedAnswer && acceptedNumber > proposal.getInheritedNumber()) {
                 proposal.setInheritedNumber(acceptedNumber);
                 proposal.setAnswer(acceptedAnswer);
             }
-            if (config.getMajority() == proposal.getPromisedCount()) {
+            if (config.getMajority() == proposal.getPromisedBallot()) {
                 acceptor.onCommitted(number, question, proposal.getAnswer());
             }
         }
     }
 
     @Override
-    public void onAccepted(int number, String question) {
-        Proposal proposal = getProposal(question);
+    public void onAccepted(int number, Q question) {
+        Proposal<Q, A> proposal = getProposal(question);
         if (null != proposal && proposal.getNumber() == number) {
-            proposal.setAcceptedCount(proposal.getAcceptedCount() + 1);
-            if (config.getMajority() == proposal.getAcceptedCount()) {
+            proposal.setAcceptedBallot(proposal.getAcceptedBallot() + 1);
+            if (config.getMajority() <= proposal.getPromisedBallot() &&
+                    config.getMajority() == proposal.getAcceptedBallot()) {
                 learner.onChosen(question, proposal.getAnswer());
             }
         }
     }
 
     @Override
-    public void onRejected(int number, String question, int promisedNumber) {
-        Proposal proposal = getProposal(question);
+    public void onRejected(int number, Q question, int promisedNumber) {
+        Proposal<Q, A> proposal = getProposal(question);
         if (null != proposal && proposal.getNumber() == number) {
             propose(createNumber(promisedNumber), question, proposal.getAnswer());
         }
     }
 
-    public abstract Proposal getProposal(String question);
+    public abstract Proposal<Q, A> getProposal(Q question);
 
-    public abstract void setProposal(Proposal proposal);
+    public abstract void setProposal(Proposal<Q, A> proposal);
 
     private int createNumber(int lastNumber) {
         int number = lastNumber - lastNumber % config.getTotal() + config.getNo();
@@ -66,8 +67,8 @@ public abstract class BaseProposer implements Proposer {
         return number;
     }
 
-    private void propose(int number, String question, String answer) {
-        Proposal proposal = new Proposal();
+    private void propose(int number, Q question, A answer) {
+        Proposal<Q, A> proposal = new Proposal<>();
         proposal.setNumber(number);
         proposal.setQuestion(question);
         proposal.setAnswer(answer);

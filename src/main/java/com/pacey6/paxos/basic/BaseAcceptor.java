@@ -5,16 +5,16 @@ package com.pacey6.paxos.basic;
  * Homepage:http://pacey6.com/
  * Mail:support@pacey6.com
  */
-public abstract class BaseAcceptor implements Acceptor {
-    private Proposer proposer;
+public abstract class BaseAcceptor<Q, A> implements Acceptor<Q, A> {
+    private Proposer<Q, A> proposer;
 
-    public BaseAcceptor(Proposer proposer) {
+    public BaseAcceptor(Proposer<Q, A> proposer) {
         this.proposer = proposer;
     }
 
     @Override
-    public void onPrepared(int number, String question) {
-        Subject subject = getSubject(question);
+    public void onPrepared(int number, Q question) {
+        Subject<Q, A> subject = getSubject(question);
         if (null == subject) subject = createSubject(question);
         if (number > subject.getPromisedNumber()) {
             subject.setPromisedNumber(number);
@@ -26,8 +26,8 @@ public abstract class BaseAcceptor implements Acceptor {
     }
 
     @Override
-    public void onCommitted(int number, String question, String answer) {
-        Subject subject = getSubject(question);
+    public void onCommitted(int number, Q question, A answer) {
+        Subject<Q, A> subject = getSubject(question);
         if (null == subject) subject = createSubject(question);
         if (number >= subject.getPromisedNumber()) {
             subject.setPromisedNumber(number);
@@ -40,12 +40,12 @@ public abstract class BaseAcceptor implements Acceptor {
         }
     }
 
-    public abstract Subject getSubject(String question);
+    public abstract Subject<Q, A> getSubject(Q question);
 
-    public abstract void setSubject(Subject subject);
+    public abstract void setSubject(Subject<Q, A> subject);
 
-    private Subject createSubject(String question) {
-        Subject subject = new Subject();
+    private Subject<Q, A> createSubject(Q question) {
+        Subject<Q, A> subject = new Subject<>();
         subject.setQuestion(question);
         return subject;
     }

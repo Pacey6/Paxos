@@ -5,13 +5,13 @@ package com.pacey6.paxos.basic;
  * Homepage:http://pacey6.com/
  * Mail:support@pacey6.com
  */
-public class Proposal {
+public class Proposal<Q, A> {
     private int number;
     private int inheritedNumber;
-    private int promisedCount;
-    private int acceptedCount;
-    private String question;
-    private String answer;
+    private int promisedBallot;
+    private int acceptedBallot;
+    private Q question;
+    private A answer;
 
     public int getNumber() {
         return number;
@@ -29,35 +29,35 @@ public class Proposal {
         this.inheritedNumber = inheritedNumber;
     }
 
-    public int getPromisedCount() {
-        return promisedCount;
+    public int getPromisedBallot() {
+        return promisedBallot;
     }
 
-    public void setPromisedCount(int promisedCount) {
-        this.promisedCount = promisedCount;
+    public void setPromisedBallot(int promisedBallot) {
+        this.promisedBallot = promisedBallot;
     }
 
-    public int getAcceptedCount() {
-        return acceptedCount;
+    public int getAcceptedBallot() {
+        return acceptedBallot;
     }
 
-    public void setAcceptedCount(int acceptedCount) {
-        this.acceptedCount = acceptedCount;
+    public void setAcceptedBallot(int acceptedBallot) {
+        this.acceptedBallot = acceptedBallot;
     }
 
-    public String getQuestion() {
+    public Q getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestion(Q question) {
         this.question = question;
     }
 
-    public String getAnswer() {
+    public A getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(A answer) {
         this.answer = answer;
     }
 }
