@@ -27,44 +27,26 @@ package com.pacey6.paxos.basic;
  * Homepage:http://pacey6.com/
  * Mail:support@pacey6.com
  */
-public class Proposal<Q, A> {
-    private int number;
-    private int inheritedNumber;
-    private int promisedBallot;
-    private int acceptedBallot;
+public class Instance<Q, A> {
+    private int promisedNumber;
+    private int acceptedNumber;
     private Q question;
-    private A answer;
+    private A acceptedAnswer;
 
-    public int getNumber() {
-        return number;
+    public int getPromisedNumber() {
+        return promisedNumber;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setPromisedNumber(int promisedNumber) {
+        this.promisedNumber = promisedNumber;
     }
 
-    public int getInheritedNumber() {
-        return inheritedNumber;
+    public int getAcceptedNumber() {
+        return acceptedNumber;
     }
 
-    public void setInheritedNumber(int inheritedNumber) {
-        this.inheritedNumber = inheritedNumber;
-    }
-
-    public int getPromisedBallot() {
-        return promisedBallot;
-    }
-
-    public void setPromisedBallot(int promisedBallot) {
-        this.promisedBallot = promisedBallot;
-    }
-
-    public int getAcceptedBallot() {
-        return acceptedBallot;
-    }
-
-    public void setAcceptedBallot(int acceptedBallot) {
-        this.acceptedBallot = acceptedBallot;
+    public void setAcceptedNumber(int acceptedNumber) {
+        this.acceptedNumber = acceptedNumber;
     }
 
     public Q getQuestion() {
@@ -75,11 +57,11 @@ public class Proposal<Q, A> {
         this.question = question;
     }
 
-    public A getAnswer() {
-        return answer;
+    public A getAcceptedAnswer() {
+        return acceptedAnswer;
     }
 
-    public void setAnswer(A answer) {
-        this.answer = answer;
+    public void setAcceptedAnswer(A acceptedAnswer) {
+        this.acceptedAnswer = acceptedAnswer;
     }
 }

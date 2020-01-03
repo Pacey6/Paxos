@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.pacey6.paxos</groupId>
-    <artifactId>Paxos</artifactId>
+    <artifactId>basic</artifactId>
     <version>1.0</version>
 
     <distributionManagement>
